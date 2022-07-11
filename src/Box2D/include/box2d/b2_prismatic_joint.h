@@ -23,6 +23,7 @@
 #ifndef B2_PRISMATIC_JOINT_H
 #define B2_PRISMATIC_JOINT_H
 
+#include "b2_api.h"
 #include "b2_joint.h"
 
 /// Prismatic joint definition. This requires defining a line of
@@ -31,7 +32,7 @@
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-struct b2PrismaticJointDef : public b2JointDef
+struct B2_API b2PrismaticJointDef : public b2JointDef
 {
 	b2PrismaticJointDef()
 	{
@@ -87,7 +88,7 @@ struct b2PrismaticJointDef : public b2JointDef
 /// along an axis fixed in bodyA. Relative rotation is prevented. You can
 /// use a joint limit to restrict the range of motion and a joint motor to
 /// drive the motion or to model joint friction.
-class b2PrismaticJoint : public b2Joint
+class B2_API b2PrismaticJoint : public b2Joint
 {
 public:
 	b2Vec2 GetAnchorA() const override;
@@ -151,6 +152,9 @@ public:
 	/// Dump to b2Log
 	void Dump() override;
 
+	///
+	void Draw(b2Draw* draw) const override;
+
 protected:
 	friend class b2Joint;
 	friend class b2GearJoint;
@@ -160,21 +164,21 @@ protected:
 	void SolveVelocityConstraints(const b2SolverData& data) override;
 	bool SolvePositionConstraints(const b2SolverData& data) override;
 
-	// Solver shared
 	b2Vec2 m_localAnchorA;
 	b2Vec2 m_localAnchorB;
 	b2Vec2 m_localXAxisA;
 	b2Vec2 m_localYAxisA;
 	float m_referenceAngle;
-	b2Vec3 m_impulse;
+	b2Vec2 m_impulse;
 	float m_motorImpulse;
+	float m_lowerImpulse;
+	float m_upperImpulse;
 	float m_lowerTranslation;
 	float m_upperTranslation;
 	float m_maxMotorForce;
 	float m_motorSpeed;
 	bool m_enableLimit;
 	bool m_enableMotor;
-	b2LimitState m_limitState;
 
 	// Solver temp
 	int32 m_indexA;
@@ -188,8 +192,9 @@ protected:
 	b2Vec2 m_axis, m_perp;
 	float m_s1, m_s2;
 	float m_a1, m_a2;
-	b2Mat33 m_K;
-	float m_motorMass;
+	b2Mat22 m_K;
+	float m_translation;
+	float m_axialMass;
 };
 
 inline float b2PrismaticJoint::GetMotorSpeed() const

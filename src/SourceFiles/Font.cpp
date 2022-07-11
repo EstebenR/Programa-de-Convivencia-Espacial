@@ -19,7 +19,7 @@ Font::~Font() {
 bool Font::load(const string& fileName, int size) {
 	font_ = TTF_OpenFont(fileName.c_str(), size);
 	if (font_ == nullptr) {
-		throw "Couldn't load font: " + fileName;
+		throw std::runtime_error("Couldn't load font: " + fileName);
 	}
 	return font_;
 }

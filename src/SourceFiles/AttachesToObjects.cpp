@@ -4,6 +4,11 @@
 #include "CollisionHandler.h"
 #include "SDL_macros.h"
 #include <math.h>
+#include <cmath>
+
+#ifndef _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES
+#endif /*_USE_MATH_DEFINES*/
 
 void AttachesToObjects::init() {
 	playerData_ = GETCMP1_(PlayerData);
@@ -19,13 +24,13 @@ void AttachesToObjects::attachToObject(b2Body* attachedObject, b2Vec2 collPoint,
 	if (joint_ == nullptr) {
 		attachedObject_ = attachedObject;
 		b2Vec2 perp = perpendicularCounterClockwise(collNormal);
-		float attachAngle = std::atanf(perp.y / perp.x);
+		float attachAngle = atanf(perp.y / perp.x);
 		int tilt = ((attachAngle - mainCollider_->getBody()->GetAngle()) > 0) ? -1 : 1;
-		attachAngle += (PI / 2) * tilt;
+		attachAngle += (M_PI_2) * tilt;
 
 		normalOnAttach_ = collNormal;
 		normalOnAttach_.Normalize();
-		cout << "Normal on attach " << normalOnAttach_.x << " " << normalOnAttach_.y << endl;
+		//cout << "Normal on attach " << normalOnAttach_.x << " " << normalOnAttach_.y << endl;
 		angleOnAttach_ = attachedObject->GetAngle();
 		float angleSin = sin(mainCollider_->getBody()->GetAngle());
 
@@ -35,8 +40,8 @@ void AttachesToObjects::attachToObject(b2Body* attachedObject, b2Vec2 collPoint,
 		}
 
 		else {
-			adjustNormal.x *= mainCollider_->getW(0) / 2;
-			adjustNormal.y *= mainCollider_->getW(0) / 2;
+			adjustNormal.x *= mainCollider_->getW(0) * 0.5;
+			adjustNormal.y *= mainCollider_->getW(0) * 0.5;
 
 			mainCollider_->setTransform(mainCollider_->getPos() + adjustNormal, attachAngle);
 		}
@@ -48,7 +53,7 @@ void AttachesToObjects::attachToObject(b2Body* attachedObject, b2Vec2 collPoint,
 		jointDef.localAnchorA = jointDef.bodyA->GetLocalPoint(collPoint); //Punto donde se ata el cuerpo A al cuerpo B
 		jointDef.localAnchorB = jointDef.bodyB->GetLocalPoint(collPoint); //Punto donde se ata el cuerpo B al cuerpo A
 		jointDef.referenceAngle = jointDef.bodyB->GetAngle() - jointDef.bodyA->GetAngle(); //�ngulo conjunto del cuerpo
-		cout << "se agarra en " << jointDef.localAnchorA.x << " " << jointDef.localAnchorA.y << " con un angulo local de " << jointDef.bodyA->GetAngle() << "y global " << jointDef.referenceAngle << endl;
+		//cout << "se agarra en " << jointDef.localAnchorA.x << " " << jointDef.localAnchorA.y << " con un angulo local de " << jointDef.bodyA->GetAngle() << "y global " << jointDef.referenceAngle << endl;
 		b2World* world = mainCollider_->getWorld(); //Obtenemos el mundo f�sico para crear el joint
 		joint_ = (b2WeldJoint*)world->CreateJoint(&jointDef); //Crea el joint con la definici�n que hemos definido previamente
 	}
@@ -91,16 +96,16 @@ void AttachesToObjects::onCollisionEnter(Collision* c) {
 			c->contact->GetWorldManifold(&manifold);
 			b2Vec2 normal = manifold.normal;
 			if (GETCMP_FROM_FIXTURE_(c->contact->GetFixtureA(), PlayerController) != nullptr) {
-				cout << "normal was for player as fixA" << endl;
+				//cout << "normal was for player as fixA" << endl;
 				normal = -normal;
-				cout << "box2d te odio con todas las fuerzas de mi corazon" << endl;
+				//cout << "box2d te odio con todas las fuerzas de mi corazon" << endl;
 			}
 			c->collisionHandler->createWeld(CollisionHandler::weldData(this, c->hitFixture->GetBody(),
 				b2Vec2(manifold.points[0].x, manifold.points[0].y), normal));
 			if (kBinder_ != nullptr) kBinder_->grabbed = true;
 		}
 		else {
-			cout << "colision sin input con grabbable" << endl;
+			//cout << "colision sin input con grabbable" << endl;
 		}
 	}
 }

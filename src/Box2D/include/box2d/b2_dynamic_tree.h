@@ -23,13 +23,14 @@
 #ifndef B2_DYNAMIC_TREE_H
 #define B2_DYNAMIC_TREE_H
 
+#include "b2_api.h"
 #include "b2_collision.h"
 #include "b2_growable_stack.h"
 
 #define b2_nullNode (-1)
 
 /// A node in the dynamic tree. The client does not interact with this directly.
-struct b2TreeNode
+struct B2_API b2TreeNode
 {
 	bool IsLeaf() const
 	{
@@ -52,6 +53,8 @@ struct b2TreeNode
 
 	// leaf = 0, free node = -1
 	int32 height;
+
+	bool moved;
 };
 
 /// A dynamic AABB tree broad-phase, inspired by Nathanael Presson's btDbvt.
@@ -62,7 +65,7 @@ struct b2TreeNode
 /// object to move by small amounts without triggering a tree update.
 ///
 /// Nodes are pooled and relocatable, so we use node indices rather than pointers.
-class b2DynamicTree
+class B2_API b2DynamicTree
 {
 public:
 	/// Constructing the tree initializes the node pool.
@@ -86,6 +89,9 @@ public:
 	/// Get proxy user data.
 	/// @return the proxy user data or 0 if the id is invalid.
 	void* GetUserData(int32 proxyId) const;
+
+	bool WasMoved(int32 proxyId) const;
+	void ClearMoved(int32 proxyId);
 
 	/// Get the fat AABB for a proxy.
 	const b2AABB& GetFatAABB(int32 proxyId) const;
@@ -151,9 +157,6 @@ private:
 
 	int32 m_freeList;
 
-	/// This is used to incrementally traverse the tree for re-balancing.
-	uint32 m_path;
-
 	int32 m_insertionCount;
 };
 
@@ -161,6 +164,18 @@ inline void* b2DynamicTree::GetUserData(int32 proxyId) const
 {
 	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
 	return m_nodes[proxyId].userData;
+}
+
+inline bool b2DynamicTree::WasMoved(int32 proxyId) const
+{
+	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	return m_nodes[proxyId].moved;
+}
+
+inline void b2DynamicTree::ClearMoved(int32 proxyId)
+{
+	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	m_nodes[proxyId].moved = false;
 }
 
 inline const b2AABB& b2DynamicTree::GetFatAABB(int32 proxyId) const

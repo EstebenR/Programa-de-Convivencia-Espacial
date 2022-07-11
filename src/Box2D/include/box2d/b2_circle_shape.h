@@ -23,10 +23,11 @@
 #ifndef B2_CIRCLE_SHAPE_H
 #define B2_CIRCLE_SHAPE_H
 
+#include "b2_api.h"
 #include "b2_shape.h"
 
-/// A circle shape.
-class b2CircleShape : public b2Shape
+/// A solid circle shape
+class B2_API b2CircleShape : public b2Shape
 {
 public:
 	b2CircleShape();
@@ -41,6 +42,8 @@ public:
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
 
 	/// Implement b2Shape.
+	/// @note because the circle is solid, rays that start inside do not hit because the normal is
+	/// not defined.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 				const b2Transform& transform, int32 childIndex) const override;
 

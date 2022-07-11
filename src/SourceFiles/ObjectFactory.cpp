@@ -106,14 +106,14 @@ Entity* ObjectFactory::makePipe(EntityManager* entityManager, b2World* physicsWo
 	//Por si se debe de invertir la imagen en tuberias horizontales
 	if (size.x > size.y) {
 		e->addComponent<Viewer>(Resources::PipeHor);
-		if (pos.y > CONST(int, "WINDOW_HEIGHT") / CONST(double, "PIXELS_PER_METER") / 2) {
+		if (pos.y > CONST(int, "WINDOW_HEIGHT") / CONST(double, "PIXELS_PER_METER") * 0.5f) {
 			aux->getBody()->SetTransform(pos, PI);
 		}
 	}
 	//Por si se debe de invertir la imagen en tuberias verticales
 	else {
 		e->addComponent<Viewer>(Resources::PipeVer);
-		if (pos.x > CONST(int, "WINDOW_WIDTH") / CONST(double, "PIXELS_PER_METER") / 2) {
+		if (pos.x > CONST(int, "WINDOW_WIDTH") / CONST(double, "PIXELS_PER_METER") * 0.5f) {
 			aux->getBody()->SetTransform(pos, -PI);
 		}
 	}

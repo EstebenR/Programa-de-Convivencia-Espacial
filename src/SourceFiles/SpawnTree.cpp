@@ -16,7 +16,7 @@ void SpawnTree::init() {
 	SDL_Rect rectRender = coll->getRectRender();
 	double spawnPosX = rectRender.x + (rectRender.w / 1.5);
 	double spawnPosY = rectRender.y + objectH_ * 2;
-	renderSpawnPos_ = b2Vec2(spawnPosX - (objectW_ / 2), spawnPosY - (objectH_ / 2));
+	renderSpawnPos_ = b2Vec2(spawnPosX - (objectW_ * 0.5f), spawnPosY - (objectH_ * 0.5f));
 	physicsSpawnPos_ = b2Vec2((spawnPosX / pixPerM_), (CONST(double, "WINDOW_HEIGHT") - spawnPosY) / pixPerM_);
 	cout << renderSpawnPos_.x << " " << renderSpawnPos_.y << endl;
 }

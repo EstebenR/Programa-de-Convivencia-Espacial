@@ -6,20 +6,14 @@
 
 void GameMode::initProgressBars()
 {
-	b2Vec2 healthPos;
-	healthPos = players_[0]->getComponent<HealthViewer>(ComponentType::HealthViewer)->getPos();
-	healthViewerPos_.push_back(b2Vec2(healthPos.x - 12, healthPos.y + 60));
-	if (players_.size() > 1) {
-		healthPos = players_[1]->getComponent<HealthViewer>(ComponentType::HealthViewer)->getPos();
-		healthViewerPos_.push_back(b2Vec2(healthPos.x - 80, healthPos.y + 60));
-	}
-	if (players_.size() > 2) {
-		healthPos = players_[2]->getComponent<HealthViewer>(ComponentType::HealthViewer)->getPos();
-		healthViewerPos_.push_back(b2Vec2(healthPos.x + 20, healthPos.y - 28));
-	}
-	if (players_.size() > 3) {
-		healthPos = players_[3]->getComponent<HealthViewer>(ComponentType::HealthViewer)->getPos();
-		healthViewerPos_.push_back(b2Vec2(healthPos.x - 102, healthPos.y - 28));
+	// posiciones de los progressBars
+	int posX[4] = {-12, -80, 20, -102};
+	int posY[4] = {60, 60, -28, -28};
+
+	for(int i = 0; i < players_.size(); i++){
+		b2Vec2 healthPos;
+		healthPos = players_[i]->getComponent<HealthViewer>(ComponentType::HealthViewer)->getPos();
+		healthViewerPos_.push_back(b2Vec2(healthPos.x + posX[i], healthPos.y + posY[i]));
 	}
 }
 
@@ -27,10 +21,10 @@ void GameMode::renderProgressBars(const std::vector<double>& progressValues, con
 {
 	for (int i = 0; i < players_.size(); i++) {
 		SDL_Rect dest = {
-			healthViewerPos_[i].x,
-			healthViewerPos_[i].y,
-			progressBar_->getFrameWidth() * barsScale,
-			progressBar_->getFrameHeight() * barsScale
+			(int)healthViewerPos_[i].x,
+			(int)healthViewerPos_[i].y,
+			(int)(progressBar_->getFrameWidth() * barsScale),
+			(int)(progressBar_->getFrameHeight() * barsScale)
 		};
 		int value = min((progressValues[i] * progressBar_->getNumFramesX()) / goalScore, (double)progressBar_->getNumFramesX() - 1);
 		SDL_RendererFlip flip = SDL_FLIP_NONE;

@@ -3,30 +3,54 @@
 #include "SDL_net.h"
 #include <string>
 #include "Constants.h"
+#include "Socket.h"
+#include <mutex>
+#include <thread>
 
 class MultiplayerHost
 {
 protected:
-	IPaddress hostIp_;
-	TCPsocket masterSocket_;
-	SDLNet_SocketSet socketSet_;
 
-	TCPsocket clients_[3]; //max 3 jugadores conectados + el host
+	std::unique_ptr<Socket> clients_[3];	//max 3 jugadores conectados + el host
+	Socket* socket = nullptr;
 
 	std::string hostIPAddress_;
-
-	char buffer[2048];
+	
 	int receivedBytes_ = 0;
 
-	std::string getHostIpAddress();
-public:
-	MultiplayerHost();
-	~MultiplayerHost();
+	char* buffer;
 
-	void checkActivity();
+	char message[Socket::MAX_MESSAGE_SIZE];
+	char* messagePtr = message;
+
+	unsigned int frameId = 0;
+	uint16_t size = 0;
+
+	std::string getHostIpAddress();
+
+	std::thread* rcvThread;
+	std::pair<InputPacket, bool> inputPackets[3];		// para procesarlos todos juntos tras recibirlos si es que cambian
+	std::mutex inputMutex;
+	std::mutex clientsMutex;
+	std::mutex packetMutex;
+
+	void checkJoin(Socket* client);
+	void handlePlayerActivity(Socket* client);
+	void addFrameId();
 	void handlePlayerJoin(int clientNumber);
 	void handlePlayerInput(int clientNumber);
-	void sendTexture(const SpritePacket& sPacket);
-	void sendAudio(const AudioPacket& aPacket);
-	void finishSending();
+	int finishSending();
+
+public:
+	MultiplayerHost();
+	MultiplayerHost(int port);
+	MultiplayerHost(const char* addr, const char* port);
+	void init();
+	~MultiplayerHost();
+
+	void rcv();
+	void processInput();
+	void addTexture(SpritePacket& sPacket);
+	void addAudio(AudioPacket& aPacket);
+	void send();
 };

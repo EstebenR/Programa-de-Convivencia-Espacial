@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SDL_GAME_H
+#define SDL_GAME_H
+
 #include <SDL.h>
 #include "Constants.h"
 #include <memory>
@@ -39,29 +41,31 @@ protected:
 
 	static unique_ptr<SDL_Game> instance_;
 
+	bool sendData_ = false;
 	bool isHosting_ = false;
 	bool isFullscreen_ = false;
 	int displayW_=1920;
 	int displayH_=1080;
 	float windowScale_ = 0.75;
+
 private:
 	bool exit_;
 	void initializeResources();
 	void closeResources();
 
+	Uint32 lastSendTime = 0;
+	Uint32 MS_PER_SEND_TICK = 60;
+
+	// 6 porque 65535 es el tamaño max de puerto (2^16)
+	char addr_[108] = "localhost", port_[6] = "2000";
+
 public:
-	void start();
+	void start(char* addr = nullptr, char* port = nullptr);
 	SDL_Game();
 	virtual ~SDL_Game();
 
 	SDL_Game(SDL_Game&) = delete;
 	SDL_Game& operator=(SDL_Game&) = delete;
-
-	/*inline static SDL_Game* instance() {
-		assert(instance_.get() != nullptr);
-		return instance_.get();
-		std::cout << "He sido llamado por singleton" << std::endl;
-	}*/
 
 	inline static SDL_Game* instance() {
 		if (instance_.get() == nullptr) {
@@ -70,12 +74,15 @@ public:
 		return instance_.get();
 	}
 
+	char* getAddr() {return addr_;}
+	char* getPort() {return port_;}
 
 	inline unsigned int getTime() {
 		return SDL_GetTicks();
 	}
 
 	inline void exitGame() { exit_ = true; }
+	inline bool isExit() const { return exit_; }
 
 	inline void switchFullscreen();
 
@@ -88,12 +95,17 @@ public:
 	SDL_Renderer* getRenderer() { return  renderer_; }
 	const Constants* getConstants() { return &constants_; }
 
-	bool isHosting() const { return isHosting_; };
-	MultiplayerHost* getHost() {
-		if (mpHost_ == nullptr) {
-			mpHost_ = new MultiplayerHost();
-			isHosting_ = true;
-			gamestateMachine_->setMpHost(mpHost_);
-		} return mpHost_;
+	double getMS_PER_FRAME() const { return MS_PER_FRAME_; }
+
+	bool isHosting() const {
+		return isHosting_;
 	}
+
+	bool haveToSend() const {
+		return isHosting_ && sendData_;
+	}
+
+	MultiplayerHost* getHost();
 };
+
+#endif //SDL_GAME_H

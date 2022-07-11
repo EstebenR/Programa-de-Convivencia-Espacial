@@ -23,12 +23,12 @@ void CreditsState::init()
 	//FONDO
 	fondo_ = SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::CreditsRoom);
 
-	//MÚSICA
+	//Mï¿½SICA
 	//SDL_Game::instance()->getAudioMngr()->playMusic(Resources::MainMenuMusic, -1);
 
-	//Texto para vover al menú
+	//Texto para vover al menï¿½
 	continueText = entityManager_->addEntity();
-	continueText->addComponent<UIViewer>(Resources::ReturnText, b2Vec2((CONST(int, "WINDOW_WIDTH") / 2) - 600, CONST(int, "WINDOW_HEIGHT") - 90), 1, 0);
+	continueText->addComponent<UIViewer>(Resources::ReturnText, b2Vec2((CONST(int, "WINDOW_WIDTH") * 0.5f) - 600, CONST(int, "WINDOW_HEIGHT") - 90), 1, 0);
 }
 
 void CreditsState::render()

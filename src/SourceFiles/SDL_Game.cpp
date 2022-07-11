@@ -8,7 +8,7 @@
 unique_ptr<SDL_Game> SDL_Game::instance_;
 
 SDL_Game::SDL_Game() {
-	constants_ = Constants("./config/constants.json");
+	constants_ = Constants("../config/constants.json");
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_DisplayMode display;
 	SDL_GetCurrentDisplayMode(0, &display);
@@ -40,11 +40,15 @@ SDL_Game::~SDL_Game() {
 	if (mpHost_ != nullptr)
 		delete mpHost_;
 
-	SDL_DestroyRenderer(renderer_);
+	if(renderer_ != nullptr) {
+		SDL_DestroyRenderer(renderer_);
 	renderer_ = nullptr;
+	}
 
-	SDL_DestroyWindow(window_);
-	window_ = nullptr;
+	if(window_ != nullptr) {
+		SDL_DestroyWindow(window_);
+		window_ = nullptr;
+	}
 
 	SDL_Quit();
 }
@@ -53,16 +57,16 @@ void SDL_Game::switchFullscreen()
 {
 	if(!isFullscreen_)
 	{
-			SDL_SetWindowSize(window_, displayW_, displayH_);
-			SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN);
-			isFullscreen_ = true;
+		SDL_SetWindowSize(window_, displayW_, displayH_);
+		SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN);
+		isFullscreen_ = true;
 	}
 	else
 	{
-			SDL_SetWindowSize(window_, displayW_*windowScale_, displayH_*windowScale_);
-			SDL_SetWindowFullscreen(window_, 0);
-			SDL_SetWindowPosition(window_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);	
-			isFullscreen_ = false;
+		SDL_SetWindowSize(window_, displayW_*windowScale_, displayH_*windowScale_);
+		SDL_SetWindowFullscreen(window_, 0);
+		SDL_SetWindowPosition(window_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);	
+		isFullscreen_ = false;
 	}
 }
 
@@ -115,7 +119,11 @@ void SDL_Game::closeResources() {
 	inputHandler_ = nullptr;
 }
 
-void SDL_Game::start() {
+void SDL_Game::start(char* addr, char* port)
+{
+	if(addr != nullptr) strcpy(addr_, addr);
+	if(port != nullptr) strcpy(port_, port);
+
 	exit_ = false;
 	gamestateMachine_->changeToState(States::playableMenu, 0);
 	//gamestateMachine_->changeToState(States::play, 4, GamemodeID::Timed, "BoilerRoom"); //BoilerRoom, LivingRoom, GymRoom
@@ -127,9 +135,23 @@ void SDL_Game::start() {
 		Uint32 frameTime = getTime() - startTime;
 		if (frameTime < MS_PER_FRAME_)
 			SDL_Delay(MS_PER_FRAME_ - frameTime);
-		else
-			cout << "LAGGING BEHIND! " << frameTime << endl << endl;
+		
+		if(startTime - lastSendTime >= MS_PER_SEND_TICK) {
+			sendData_ = true;
+			lastSendTime = startTime;
+		}
+		else sendData_ = false;
+		//else cout << "LAGGING BEHIND! " << frameTime << endl << endl;
+
 	}
 	//}
 	//else std::cout << "No hay mando conectado.\nAt SDL_Game.cpp line 113\n\n";
+}
+ 
+MultiplayerHost* SDL_Game::getHost() {
+	if (mpHost_ == nullptr) {
+		mpHost_ = new MultiplayerHost(addr_, port_);
+		isHosting_ = true;
+		gamestateMachine_->setMpHost(mpHost_);
+	} return mpHost_;
 }

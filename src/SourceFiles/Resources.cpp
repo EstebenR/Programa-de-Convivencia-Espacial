@@ -1,5 +1,5 @@
 #include "Resources.h"
-#include "SDL_Macros.h"
+#include "SDL_macros.h"
 
 vector<Resources::FontInfo> Resources::fonts_{
 	//Fuentes {nombre_en_enum, ruta, tama�o}
@@ -46,7 +46,7 @@ vector<Resources::ImageInfo> Resources::images_{
 	{ PlayerPlaceholder,resourcesPath + "textures/playerPlaceholder.png"},
 
 	{Ready , resourcesPath + "textures/ready.png"},
-	{PressReady , resourcesPath + "textures/pressready.png"},
+	{PressReady , resourcesPath + "textures/pressReady.png"},
 
 	{CursorUiSelectMap, resourcesPath + "textures/cursorSelMap.png"},
 	{CapitalismIcon, resourcesPath + "textures/Moneda.png"},
@@ -58,7 +58,7 @@ vector<Resources::ImageInfo> Resources::images_{
 	// Weapons and map items
 	{ Ball, resourcesPath + "textures/PelotaSaltarina.png" },
 	{ Extinguisher, resourcesPath + "textures/Extintor.png" },
-	{ Fireball,resourcesPath + "textures/fireballSP.png", 6},
+	{ Fireball,resourcesPath + "textures/FireballSP.png", 6},
 	{ Dumbbell, resourcesPath + "textures/Mancuerna.png" },
 	{ Slipper, resourcesPath + "textures/Chancla.png" },
 	{ Stapler, resourcesPath + "textures/Grapadora.png" },
@@ -126,7 +126,7 @@ vector<Resources::ImageInfo> Resources::images_{
 	//badges
 	{ badgeCapitalism,resourcesPath + "textures/MonedaUI.png" },
 	{ badgeController,resourcesPath + "textures/Mando.png" },
-	{ badgeStocks,resourcesPath + "textures/skullUI.png" },
+	{ badgeStocks,resourcesPath + "textures/SkullUI.png" },
 	{ badgeWifi,resourcesPath + "textures/Router.png" },
 	{ badgeTimed,resourcesPath + "textures/TreadmillPanel.png" },
 

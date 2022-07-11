@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Vector2D.h"
 #include <queue>
+#include <list>
 #include "checkML.h"
 
 class Collider;
@@ -24,7 +25,7 @@ protected:
 	//Velocidad con las que salen las particulas
 	float speed_;
 
-	//Aleatoridad en la generación de las partículas
+	//Aleatoridad en la generaciï¿½n de las partï¿½culas
 	int speedVariation_;
 	int generationOdds_;
 	int minGenerationOdds_;
@@ -34,7 +35,7 @@ protected:
 	//Valores entre [0,180]
 	int emissionConeAngle_;
 
-	//Tamaño de la particula en cuadrado
+	//Tamaï¿½o de la particula en cuadrado
 	Uint16 size_;
 
 	//Tiempo que pasa viva la particula en milisegundos
@@ -62,10 +63,10 @@ protected:
 	};
 
 	std::list<Particle> particles_;
-	std::queue<list<Particle>::iterator> particlesToDelete_;
+	std::queue<std::list<Particle>::iterator> particlesToDelete_;
 public:
 	ParticleEmitter(Vector2D direction, int textureId, float speed, int numTextures = 1, int particleGenerationOdds = 5, Uint16 particleLifetime = 1000, Uint16 size = 20, Uint16 emittingTime = 1000, int speedVariation = 0, int emissionConeAngle = 10.0);
-	virtual ~ParticleEmitter() { Component::~Component(); };
+	virtual ~ParticleEmitter() { };
 
 	virtual void init() override;
 	virtual void update() override;

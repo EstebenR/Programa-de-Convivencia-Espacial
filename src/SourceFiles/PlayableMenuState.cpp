@@ -42,7 +42,7 @@ void PlayableMenuState::init()
 	StaplerPool staplerPool_;
 
 	tmap = new TileMap(CONST(double, "WINDOW_WIDTH"), CONST(double, "WINDOW_HEIGHT"),
-		"assets/game/tilemaps/MenuRoom.json",
+		resourcesPath + "tilemaps/MenuRoom.json",
 		entityManager_, physicsWorld_, &bulletPool_, &confettiPool_, &staplerPool_, nullptr);
 	tmap->init();
 	doors_ = *tmap->getDoorViewers();

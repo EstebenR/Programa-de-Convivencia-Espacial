@@ -8,8 +8,8 @@ void WiFightGameMode::init(PlayState* game)
 {
 	GameMode::init(game);
 
-	halfWinWidth_ = CONST(int, "WINDOW_WIDTH") / 2;
-	halfWinHeight_ = CONST(int, "WINDOW_HEIGHT") / 2;
+	halfWinWidth_ = CONST(int, "WINDOW_WIDTH") * 0.5f;
+	halfWinHeight_ = CONST(int, "WINDOW_HEIGHT") * 0.5f;
 	pointsToWin_ = CONST(double, "POINTS_TO_WIN");
 
 	GameMode::createPlayers(game);
@@ -32,7 +32,7 @@ void WiFightGameMode::render()
 	if (roundFinished_) {
 		Texture* ganador = SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::winner1 + winnerId_);
 		SDL_Rect destRect{
-			halfWinWidth_ - ganador->getWidth() / 2,
+			halfWinWidth_ - (int)(ganador->getWidth() * 0.5f),
 			halfWinHeight_,
 			ganador->getWidth(),
 			ganador->getHeight()

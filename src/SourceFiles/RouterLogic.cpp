@@ -30,7 +30,7 @@ void RouterLogic::update()
 {	//5 should be a constant and points should be based on distance from the router and number of players in the area. More players inside = less points for everyone else.
 	int numJug = playersInsideRange_.size();
 	for (int k = 0; k < numJug; k++) {
-		// puntos añadidos = 1 / (numJugadores * (distancia + 1) para no dividir entre 0)
+		// puntos aï¿½adidos = 1 / (numJugadores * (distancia + 1) para no dividir entre 0)
 		double points = CONST(int, "POINTS_WHEN_INSIDE_ROUTER") / (numJug * ((playersInsideRange_[k].posPlayer->getPos() - posRouter_->getPos()).Length() + 1));
 		wifightGameMode_->addPoints(playersInsideRange_[k].id, min(points, CONST(double, "MAX_POINTS_PER_TICK")));
 
@@ -38,8 +38,11 @@ void RouterLogic::update()
 			Collider* c = playersInsideRange_[k].posPlayer;
 			b2Vec2 dir = c->getPos() - posRouter_->getPos();
 
+			b2Vec2 aux = dir;
+			aux.Normalize();
+
 			wifiPool_->addBullet(posRouter_->getPos(), { c->getW(0) * (float)points, c->getH(0) * (float)points },
-				wifiWaveSpd_ * points * dir.NormalizedVector(),
+				wifiWaveSpd_ * points * aux,
 				Resources::WiFiWave, 0, playersInsideRange_[k].id);
 			actFrame_ = 0;
 		}

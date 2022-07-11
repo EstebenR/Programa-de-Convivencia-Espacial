@@ -352,3 +352,6 @@ MigrationBackup/
 
 # SDL Changes
 src/SDL2-2.0.10/docs
+
+src/[Bb]uild/
+src/tileson/[Bb]uild/

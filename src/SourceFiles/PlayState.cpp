@@ -49,7 +49,7 @@ void PlayState::init() {
 	secondsPerFrame_ = CONST(double, "SECONDS_PER_FRAME");
 
 	tilemap_ = new TileMap(CONST(double, "WINDOW_WIDTH"), CONST(double, "WINDOW_HEIGHT"),
-		"assets/game/tilemaps/" + tilemapName_ + ".json",
+		resourcesPath + "tilemaps/" + tilemapName_ + ".json",
 		entityManager_, physicsWorld_, &bulletPool_, &confettiPool_, &staplerPool_, gameMode_);
 	tilemap_->init();
 	gameMode_->setTileMap(tilemap_);

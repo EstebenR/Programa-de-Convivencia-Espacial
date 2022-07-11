@@ -15,7 +15,7 @@ void ColliderViewer::init() {
 }
 
 void ColliderViewer::drawRect(SDL_Rect* rect) const {
-	setPoints(rect->x, rect->y, rect->w / 2, rect->h / 2);
+	setPoints(rect->x, rect->y, rect->w * 0.5, rect->h * 0.5);
 	SDL_RenderDrawLines(renderer_, points_, 5);
 }
 
@@ -67,7 +67,7 @@ void ColliderViewer::draw() const {
 // este algoritmo es bastante r�pido (~500 microsegundos)
 void ColliderViewer::drawCircle(SDL_Rect* rect) const
 {
-	int32_t radius = rect->w / 2;
+	int32_t radius = rect->w * 0.5;
 	b2Vec2 center = { (float)(rect->x + radius), (float)(rect->y + radius) };
 
 	const int32_t diameter = (radius * 2);

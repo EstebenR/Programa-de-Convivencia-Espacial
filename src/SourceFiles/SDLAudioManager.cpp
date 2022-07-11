@@ -75,10 +75,13 @@ bool SDLAudioManager::loadSound(int tag, const string& fileName) {
 
 int SDLAudioManager::playChannel(int tag, int loops, int channel) {
 	Mix_Chunk* chunk = chunks_[tag];
-	if (chunk != nullptr) {
+	if (chunk != nullptr)
+	{
+		if (SDL_Game::instance()->haveToSend()) {
+			AudioPacket aP = { false, (char)tag, (char)loops };
+			SDL_Game::instance()->getHost()->addAudio(aP);
+		}
 		return Mix_PlayChannel(channel, chunk, loops);
-		if (SDL_Game::instance()->isHosting())
-			SDL_Game::instance()->getHost()->sendAudio({ 'A',false, (char)tag, (char)loops });
 	}
 	else {
 		return -1;
@@ -127,8 +130,11 @@ void SDLAudioManager::playMusic(int tag, int loops) {
 	Mix_Music* music = music_[tag];
 	if (music != nullptr) {
 		Mix_PlayMusic(music, loops);
-		if (SDL_Game::instance()->isHosting())
-			SDL_Game::instance()->getHost()->sendAudio({ 'A',true, (char)tag });
+
+		if (SDL_Game::instance()->isHosting()) {
+			AudioPacket aP = { true, (char)tag, (char)loops };
+			SDL_Game::instance()->getHost()->addAudio(aP);
+		}
 	}
 }
 

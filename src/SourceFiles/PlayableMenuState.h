@@ -4,7 +4,7 @@
 #include "GameMode.h"
 #include "Entity.h"
 #include "checkML.h"
-#include "collisionHandler.h"
+#include "CollisionHandler.h"
 #include "Resources.h"
 #include "MatchInfo.h"
 #include "BananaPool.h"

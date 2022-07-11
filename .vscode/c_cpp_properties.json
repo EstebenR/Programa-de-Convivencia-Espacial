@@ -1,0 +1,34 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/src/Box2D/include/box2d",
+                "${workspaceFolder}/src/SDL2_image-2.0.5/include",
+                "${workspaceFolder}/src/SDL2_mixer-2.0.4/include",
+                "${workspaceFolder}/src/SDL2_net-2.0.1/include",
+                "${workspaceFolder}/src/SDL2_ttf-2.0.15/include",
+                "${workspaceFolder}/src/SDL2-2.0.10/include",
+                "${workspaceFolder}/src/json/single_include",
+                "${workspaceFolder}/src/SourceFiles",
+                "${workspaceFolder}/src/json/single_include/nlohmann"
+            ],
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "compilerArgs": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "`sdl2-config --cflags --libs`",
+                "-lSDL2",
+                "-lSDL2_mixer",
+                "-lSDL2_image",
+                "-lSDL2_ttf"
+            ]
+        }
+    ],
+    "version": 4
+}

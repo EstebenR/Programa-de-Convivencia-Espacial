@@ -55,7 +55,7 @@ public:
 
 	~Collider() {
 		//world_->DestroyBody(body_); world_ = nullptr;
-		// el body se destruye automáticamente al destruir el world
+		// el body se destruye automï¿½ticamente al destruir el world
 	}
 
 	virtual void init() override;
@@ -72,7 +72,7 @@ public:
 	b2World* getWorld() const { return world_; }
 	b2Fixture* getFixture(int i) const { return fixtures_[i]; }
 	float getAngle() const { return body_->GetAngle(); }
-	float getAngleInDegrees() const { return body_->GetAngle() * -180.0 / PI; }
+	float getAngleInDegrees() const { return body_->GetAngle() * -57.2957795131; }		// 57.2957795131 = 180/PI
 	float getMass() const { return body_->GetMass(); }
 	bool isAwake() const { return body_->IsAwake(); }
 	bool isSensor(int i) const { return fixtureDefs_[i].isSensor; }
@@ -100,7 +100,7 @@ public:
 	void setAwake(bool b) { body_->SetAwake(b); }
 	void setEnabled(bool b) { body_->SetEnabled(b); }
 	void setBullet(bool b) { body_->SetBullet(b); }
-	void setUserData(void* data) { body_->SetUserData(data); }
+	void setUserData(void* data) { body_->GetUserData().pointer = (uintptr_t)data; }
 	void setTransform(b2Vec2 pos, float angle) { body_->SetTransform(pos, angle); }
 	void setLinearVelocity(b2Vec2 vel) { body_->SetLinearVelocity(vel); }
 	void setAngularVelocity(float vel) { body_->SetAngularVelocity(vel); }

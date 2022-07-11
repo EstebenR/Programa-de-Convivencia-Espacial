@@ -23,13 +23,16 @@
 #include "EndGameState.h"
 #include "OptionsMenuState.h"
 
-GameStateMachine::GameStateMachine() {
+GameStateMachine::GameStateMachine()
+{
 	for (short i = 0; i < States::NUMBER_OF_STATES; i++)
 		states_.push_back(nullptr);
 }
 
-GameStateMachine::~GameStateMachine() {
-	for (GameState* state : states_) {
+GameStateMachine::~GameStateMachine()
+{
+	for (GameState *state : states_)
+	{
 		delete state;
 	}
 	states_.clear();
@@ -41,13 +44,16 @@ GameStateMachine::~GameStateMachine() {
 void GameStateMachine::setPauseOwner(int ownerID)
 {
 	changeToState(States::pause);
-	if (PauseState* pause = static_cast<PauseState*>(states_[States::pause]))
+	if (PauseState *pause = static_cast<PauseState *>(states_[States::pause]))
 		pause->setOwner(ownerID);
 }
 
-void GameStateMachine::changeToState(int state, int gameMode, string tileMap) {
-	if (state != currentState_ && state < States::NUMBER_OF_STATES) {
-		if (currentState_ != States::transition) {
+void GameStateMachine::changeToState(int state, int gameMode, string tileMap)
+{
+	if (state != currentState_ && state < States::NUMBER_OF_STATES)
+	{
+		if (currentState_ != States::transition)
+		{
 			loadState(state, gameMode, tileMap); //Evita cargar el mapa dos veces si viene de transition
 			states_[state]->onLoaded();
 		}
@@ -59,7 +65,8 @@ void GameStateMachine::changeToState(int state, int gameMode, string tileMap) {
 	}
 }
 
-void GameStateMachine::transitionToState(int state, int gameMode, string tileMap) {
+void GameStateMachine::transitionToState(int state, int gameMode, string tileMap)
+{
 	loadState(state, gameMode, tileMap);
 	delete states_[States::transition];
 	states_[States::transition] = new TransitionState(currentState_, state, &states_);
@@ -67,13 +74,16 @@ void GameStateMachine::transitionToState(int state, int gameMode, string tileMap
 	currentState_ = States::transition;
 }
 
-void GameStateMachine::loadState(int state, int gameMode, string tileMap) {
-	if (states_[state] == nullptr) {
+void GameStateMachine::loadState(int state, int gameMode, string tileMap)
+{
+	if (states_[state] == nullptr)
+	{
 		//create state
 		//states_[state] = new... se necesita struct? o switch tal cual xd
 		string aux;
-		char* host;
-		switch (state) {
+		char *host;
+		switch (state)
+		{
 		case States::menu:
 			states_[state] = new MapSelectionState(0);
 			break;
@@ -81,8 +91,10 @@ void GameStateMachine::loadState(int state, int gameMode, string tileMap) {
 		{
 			pair<GamemodeID, string> round = matchInfo_->getCurrentRound();
 
-			if (round.first < NUMBER_OF_GAMEMODES) {
-				switch (round.first) {
+			if (round.first < NUMBER_OF_GAMEMODES)
+			{
+				switch (round.first)
+				{
 				case (GamemodeID::Capitalism):
 					states_[state] = new PlayState(new CapitalismGameMode(matchInfo_), round.second);
 					break;
@@ -107,29 +119,33 @@ void GameStateMachine::loadState(int state, int gameMode, string tileMap) {
 			}
 		}
 		break; // :P
-		case States::lobby: {
+		case States::lobby:
+		{
 			states_[state] = new LobbyState();
 		}
-						  break;
+			break;
 
-		case States::playableMenu: {
+		case States::playableMenu:
+		{
 			states_[state] = new PlayableMenuState();
 		}
-								 break;
-		case States::options: {
+			break;
+		case States::options:
+		{
 			states_[state] = new OptionsMenuState();
 		}
-							break;
-		case States::credits: {
+			break;
+		case States::credits:
+		{
 			states_[state] = new CreditsState();
 		}
-							break;
+			break;
 
 		case States::pause:
 			//if (states_[state] != nullptr)	delete states_[state];
 			states_[state] = new PauseState();
 			break;
-		case States::midGame:			//Jugadores totales-----Jugador que gana la ronda
+		case States::midGame: //Jugadores totales-----Jugador que gana la ronda
 			//Se usa el parametro gamemode como indicador de quien gana la ronda
 			states_[state] = new MidGameState(matchInfo_->getNumberOfPlayers(), gameMode);
 			break;
@@ -137,9 +153,9 @@ void GameStateMachine::loadState(int state, int gameMode, string tileMap) {
 			states_[state] = new OnlineMenuState();
 			break;
 		case States::client:
-			aux = CONST(string, "HOST_IP");
-			host = &aux[0];
-			states_[state] = new ClientState(host);
+			// aux = CONST(string, "HOST_IP");
+			// host = &aux[0];
+			states_[state] = new ClientState(SDL_Game::instance()->getAddr(), SDL_Game::instance()->getPort());
 			break;
 		case States::endGame:
 			states_[state] = new EndGameState();
@@ -149,47 +165,57 @@ void GameStateMachine::loadState(int state, int gameMode, string tileMap) {
 		//inicializar la nueva escena
 		states_[state]->init();
 	}
-	else if (state == States::menu) {
+	else if (state == States::menu)
+	{
 		//borrar playState para crear otro
 		deleteState(States::play);
 	}
-	else if (state == States::midGame) {
-		static_cast<MidGameState*>(states_[States::midGame])->setWinner(gameMode);
+	else if (state == States::midGame)
+	{
+		static_cast<MidGameState *>(states_[States::midGame])->setWinner(gameMode);
 	}
 }
 
-void GameStateMachine::deleteState(int state) {
-	if (state != currentState_ && state < States::NUMBER_OF_STATES && states_[state] != nullptr) {
+void GameStateMachine::deleteState(int state)
+{
+	if (state != currentState_ && state < States::NUMBER_OF_STATES && states_[state] != nullptr)
+	{
 		delete states_[state];
 		states_[state] = nullptr;
 	}
 }
 
-void GameStateMachine::update() {
+void GameStateMachine::update()
+{
 	states_[currentState_]->update();
 }
 
-void GameStateMachine::render() {
+void GameStateMachine::render()
+{
 	SDL_RenderClear(SDL_Game::instance()->getRenderer());
 	states_[currentState_]->render();
 	SDL_RenderPresent(SDL_Game::instance()->getRenderer());
 }
 
-void GameStateMachine::handleInput() {
+void GameStateMachine::handleInput()
+{
 	states_[currentState_]->handleInput();
 }
 
-void GameStateMachine::gameCycle() {
+void GameStateMachine::gameCycle()
+{
 	handleInput();
-	if (mpHost_ != nullptr)
-		mpHost_->checkActivity();
+	if (mpHost_ != nullptr) {
+		mpHost_->processInput();
+	}
 	update();
 	render();
-	if (mpHost_ != nullptr)
-		mpHost_->finishSending();
+	if (mpHost_ != nullptr && SDL_Game::instance()->haveToSend()) {
+		mpHost_->send();
+	}
 }
 
-void GameStateMachine::setMpHost(MultiplayerHost* host)
+void GameStateMachine::setMpHost(MultiplayerHost *host)
 {
 	mpHost_ = host;
 }

@@ -43,18 +43,18 @@ void MidGameState::init()
 		b2Vec2 markerPos = b2Vec2((CONST(int, "START_POSITION") + distanceGainedByPoint_ * i) - CONST(int, "MARKER_WIDTH"), CONST(int, "MARKER_Y_POSITION"));
 		UIViewer* markerViewer = marker->addComponent<UIViewer>(Resources::Token, markerPos, markerScale_, 0);
 		//hay que calcular el centro del marcador y luego buscar donde quedaria la esquina superior izquierda de la textura socorro
-		b2Vec2 numberPos = b2Vec2(markerPos.x + markerSize.x / 2 - digitSize.x / 2, markerPos.y + markerSize.y / 2 * 1.1 - digitSize.y / 2);
+		b2Vec2 numberPos = b2Vec2(markerPos.x + markerSize.x * 0.5f - digitSize.x * 0.5f, markerPos.y + markerSize.y * 0.5f * 1.1 - digitSize.y * 0.5f);
 		if (i < 10) {
 			marker->addComponent<UIViewer>((Resources::TextureId)ZeroTex + i, numberPos, markerNumberScale_, 0);
 		}
 		else {
-			marker->addComponent<UIViewer>((Resources::TextureId)ZeroTex + i / 10, b2Vec2(numberPos.x - digitSize.x / 2, numberPos.y), markerNumberScale_, 0);
-			marker->addComponent<UIViewer>((Resources::TextureId)ZeroTex + i % 10, b2Vec2(numberPos.x + digitSize.x / 2, numberPos.y), markerNumberScale_, 0);
+			marker->addComponent<UIViewer>((Resources::TextureId)ZeroTex + i / 10, b2Vec2(numberPos.x - digitSize.x * 0.5f, numberPos.y), markerNumberScale_, 0);
+			marker->addComponent<UIViewer>((Resources::TextureId)ZeroTex + i % 10, b2Vec2(numberPos.x + digitSize.x * 0.5f, numberPos.y), markerNumberScale_, 0);
 		}
 		markers.push_back(marker);
 	}
 
-	int initPosY = (CONST(int, "WINDOW_HEIGHT") / 2) - (-distanceBetweenRockets_ / 2 + (distanceBetweenRockets_ / 2 * numPlayers_));
+	int initPosY = (CONST(int, "WINDOW_HEIGHT") * 0.5f) - (-distanceBetweenRockets_ * 0.5f + (distanceBetweenRockets_ * 0.5f * numPlayers_));
 
 	SDL_Rect rocketRect;
 	rocketRect.x = rocketRect.y = 0;
@@ -68,14 +68,14 @@ void MidGameState::init()
 	stationRect.h = CONST(int, "STATION_H");
 
 	Entity* spaceStation = entityManager_->addEntity(2);
-	spaceStationViewer_ = spaceStation->addComponent<AnimatedUIViewer>(Resources::SpaceStation, 3, b2Vec2(CONST(int, "WINDOW_WIDTH") / 2 - CONST(int, "SPACE_STATION_WIDTH") / 2, CONST(int, "WINDOW_HEIGHT") / 2 - CONST(int, "SPACE_STATION_HEIGHT") / 2), 1, 0);
+	spaceStationViewer_ = spaceStation->addComponent<AnimatedUIViewer>(Resources::SpaceStation, 3, b2Vec2(CONST(int, "WINDOW_WIDTH") * 0.5f - CONST(int, "SPACE_STATION_WIDTH") * 0.5f, CONST(int, "WINDOW_HEIGHT") * 0.5f - CONST(int, "SPACE_STATION_HEIGHT") * 0.5f), 1, 0);
 
 	for (int k = 0; k < numPlayers_; k++) {
 		Entity* newRocket = entityManager_->addEntity();
 		//We could move the rockets using only the Viewer, but this will make
 		//the logic much much easier.
 
-		AnimatedUIViewer* viewer = newRocket->addComponent<AnimatedUIViewer>(Resources::RocketSpriteSheet, 10, b2Vec2(CONST(int, "START_ROCKET_POSITION"), (initPosY - CONST(int, "ROCKET_H")) + (distanceBetweenRockets_ * k) + rocketRect.h / 2), 1, 0);
+		AnimatedUIViewer* viewer = newRocket->addComponent<AnimatedUIViewer>(Resources::RocketSpriteSheet, 10, b2Vec2(CONST(int, "START_ROCKET_POSITION"), (initPosY - CONST(int, "ROCKET_H")) + (distanceBetweenRockets_ * k) + rocketRect.h * 0.5f), 1, 0);
 		playerRockets_.push_back(viewer);
 
 		viewer->setFrame(0, k);	// cuando haya skins, descomentar esta línea y quitar startAnimation
@@ -84,7 +84,7 @@ void MidGameState::init()
 	//Texto para terminar la intermision
 	continueText = entityManager_->addEntity();
 	UIViewer* uiV = continueText->addComponent<UIViewer>(Resources::ContinueText, b2Vec2(0, 0), 1, 0);
-	uiV->setPosUIElement(b2Vec2(((CONST(int, "WINDOW_WIDTH") - uiV->getW()) / 2), CONST(int, "WINDOW_HEIGHT") - CONST(int, "UI_PRESS_KEY_OFFSET_Y")));
+	uiV->setPosUIElement(b2Vec2(((CONST(int, "WINDOW_WIDTH") - uiV->getW()) * 0.5f), CONST(int, "WINDOW_HEIGHT") - CONST(int, "UI_PRESS_KEY_OFFSET_Y")));
 	continueText->setActive(false);
 }
 
@@ -152,7 +152,7 @@ void MidGameState::update()
 	case animationState::zoom:
 		for (int k = 0; k < playerRockets_.size(); k++) {
 			int dirY = 1;
-			if (k < playerRockets_.size() / 2) dirY = -1;
+			if (k < playerRockets_.size() * 0.5f) dirY = -1;
 			playerRockets_[k]->setPosUIElement(b2Vec2(playerRockets_[k]->getPosUIElement().x + CONST(int, "ROCKET_SHAKE_X"), playerRockets_[k]->getPosUIElement().y + CONST(int, "ROCKET_SHAKE_Y") * dirY));
 		}
 		if (currentFrame >= frameZoomStateEnds_) {
@@ -213,14 +213,14 @@ void MidGameState::onLoaded() {
 	spaceStationViewer_->setScale(spaceStationScaleFactor_);
 	buttonPush = false;
 
-	int initPos = (CONST(int, "WINDOW_HEIGHT") / 2) - (-distanceBetweenRockets_ / 2 + (distanceBetweenRockets_ / 2 * numPlayers_));
+	int initPos = (CONST(int, "WINDOW_HEIGHT") * 0.5f) - (-distanceBetweenRockets_ * 0.5f + (distanceBetweenRockets_ * 0.5f * numPlayers_));
 
 	SDL_Rect rocketRect;
 	rocketRect.x = rocketRect.y = 0;
 	rocketRect.w = 160;
 	rocketRect.h = 76;
 
-	spaceStationViewer_->setPosUIElement(b2Vec2(CONST(int, "WINDOW_WIDTH") / 2 - CONST(int, "SPACE_STATION_WIDTH") / 2, CONST(int, "WINDOW_HEIGHT") / 2 - CONST(int, "SPACE_STATION_HEIGHT") / 2));
+	spaceStationViewer_->setPosUIElement(b2Vec2(CONST(int, "WINDOW_WIDTH") * 0.5f - CONST(int, "SPACE_STATION_WIDTH") * 0.5f, CONST(int, "WINDOW_HEIGHT") * 0.5f - CONST(int, "SPACE_STATION_HEIGHT") * 0.5f));
 
 	vector<MatchInfo::PlayerInfo*>* playersInfo = SDL_Game::instance()->getStateMachine()->getMatchInfo()->getPlayersInfo();
 	vector<int> playerPoints;
@@ -237,6 +237,6 @@ void MidGameState::onLoaded() {
 	}
 
 	for (int k = 0; k < playerRockets_.size(); k++) {
-		playerRockets_[k]->setPosUIElement(b2Vec2(CONST(int, "START_ROCKET_POSITION") + distanceGainedByPoint_ * playerPoints[k], (initPos - 76) + (distanceBetweenRockets_ * k) + rocketRect.h / 2));
+		playerRockets_[k]->setPosUIElement(b2Vec2(CONST(int, "START_ROCKET_POSITION") + distanceGainedByPoint_ * playerPoints[k], (initPos - 76) + (distanceBetweenRockets_ * k) + rocketRect.h * 0.5f));
 	}
 }

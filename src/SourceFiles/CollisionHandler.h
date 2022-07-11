@@ -20,10 +20,12 @@ class RouterLogic;
 class CollisionHandler :
 	public b2ContactListener
 {
-private:
+public:
 	struct weldData;
 	struct moveData;
 	struct bodyData;
+	
+private:
 	vector<weldData> vecWeld; //Vector donde almacenamos los welds que realizaremos al final del step.
 
 	vector<moveData> vecMove; //Vector donde almacenamos los moves que realizaremos al final del step.

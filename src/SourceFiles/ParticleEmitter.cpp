@@ -37,7 +37,7 @@ void ParticleEmitter::update() {
 			int numTexture = 0;
 			if (numParticlesInSpriteSheet_ > 0) numTexture = rand() % numParticlesInSpriteSheet_;
 
-			particles_.push_back({ Vector2D((double)colliderRect.x + colliderRect.w / 2.0 + offset_.getX(),(double)colliderRect.y + colliderRect.h / 2.0 + offset_.getY()),direction,0,speed, numTexture });
+			particles_.push_back({ Vector2D((double)colliderRect.x + colliderRect.w * 0.5f + offset_.getX(),(double)colliderRect.y + colliderRect.h * 0.5f + offset_.getY()),direction,0,speed, numTexture });
 		}
 	}
 
@@ -58,7 +58,7 @@ void ParticleEmitter::update() {
 
 void ParticleEmitter::draw() const {
 	for (Particle part : particles_) {
-		texture_->render({ (int)part.position.getX() - size_ / 2,(int)part.position.getY() - size_ / 2,size_,size_ }, 0, part.numTexture); //part numTexture es el frame
+		texture_->render({ (int)((int)part.position.getX() - size_ * 0.5f),(int)((int)part.position.getY() - size_ * 0.5f),size_,size_ }, 0, part.numTexture); //part numTexture es el frame
 	}
 }
 

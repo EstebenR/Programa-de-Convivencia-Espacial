@@ -27,7 +27,7 @@ void AbstractTimedGameMode::render()
 		if (roundFinished_ && winnerId_ != -1) {
 			Texture* ganador = SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::winner1 + winnerId_);
 			SDL_Rect destRect{
-				halfWinWidth_ - ganador->getWidth() * 0.5,
+				halfWinWidth_ - (int)(ganador->getWidth() * 0.5),
 				halfWinHeight_,
 				ganador->getWidth(),
 				ganador->getHeight()
@@ -76,7 +76,7 @@ void AbstractTimedGameMode::renderTimer(int seconds, int minutes)
 
 	for (int i = 0; i < timeTextTextures.size(); i++) {
 		SDL_Rect timeTextRect;
-		timeTextRect.x = halfWinWidth_ - timeTextTextures[i]->getWidth() / 3 * timeTextTextures.size() + timeTextTextures[i]->getWidth() / 1.5 * i;
+		timeTextRect.x = halfWinWidth_ - timeTextTextures[i]->getWidth() * 0.33333 * timeTextTextures.size() + timeTextTextures[i]->getWidth() * 0.666666 * i;
 		timeTextRect.y = 7;
 		timeTextRect.w = timeTextTextures[i]->getWidth() * 0.7;
 		timeTextRect.h = timeTextTextures[i]->getHeight() * 0.7;

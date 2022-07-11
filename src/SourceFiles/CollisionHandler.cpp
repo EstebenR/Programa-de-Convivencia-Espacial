@@ -16,8 +16,8 @@ void CollisionHandler::BeginContact(b2Contact* contact)
 
 	if (fixA == nullptr || fixB == nullptr) return;
 
-	Entity* aEnt = static_cast<Entity*>(fixA->GetBody()->GetUserData());
-	Entity* bEnt = static_cast<Entity*>(fixB->GetBody()->GetUserData());
+	Entity* aEnt = static_cast<Entity*>((void*)fixA->GetBody()->GetUserData().pointer);
+	Entity* bEnt = static_cast<Entity*>((void*)fixB->GetBody()->GetUserData().pointer);
 
 	if (aEnt != nullptr && bEnt != nullptr)
 	{
@@ -35,8 +35,8 @@ void CollisionHandler::EndContact(b2Contact* contact) {
 
 	if (fixA == nullptr || fixB == nullptr) return;
 
-	Entity* aEnt = static_cast<Entity*>(fixA->GetBody()->GetUserData());
-	Entity* bEnt = static_cast<Entity*>(fixB->GetBody()->GetUserData());
+	Entity* aEnt = static_cast<Entity*>((void*)fixA->GetBody()->GetUserData().pointer);
+	Entity* bEnt = static_cast<Entity*>((void*)fixB->GetBody()->GetUserData().pointer);
 
 	if (aEnt != nullptr && bEnt != nullptr)
 	{

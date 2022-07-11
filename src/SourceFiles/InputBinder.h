@@ -213,7 +213,7 @@ public:
 		//devolvemos un vector unitario que apunte del jugador al raton
 		if (playerCol_ != nullptr) {
 			SDL_Rect playerDrawPos = playerCol_->getRectRender();
-			b2Vec2 playerPos = b2Vec2(playerDrawPos.x + playerDrawPos.w / 2, playerDrawPos.y + playerDrawPos.h / 2);
+			b2Vec2 playerPos = b2Vec2(playerDrawPos.x + playerDrawPos.w * 0.5f, playerDrawPos.y + playerDrawPos.h * 0.5f);
 			b2Vec2 dir = ih->getMousePos() - playerPos;
 			dir.Normalize();
 			if (dir.y != 0 || dir.x != 0)
@@ -221,7 +221,7 @@ public:
 			return lastDir;
 		}
 		else {
-			cout << "no hay collider" << endl;
+			//cout << "no hay collider\n";
 			return b2Vec2();
 		}
 	}

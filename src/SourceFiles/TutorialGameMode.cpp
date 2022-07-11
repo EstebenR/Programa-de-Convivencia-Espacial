@@ -76,6 +76,8 @@ void TutorialGameMode::init(PlayState* game) {
 	//number of players
 	numPlayers_ = game->getEntityManager()->addEntity();
 	numPlayers_->addComponent<UIViewer>(Resources::Zero + players_.size(), b2Vec2(xOffsetProgressMax_, yOffsetProgress_), scale_, 0);
+
+	tutorialPointer_ = 0;
 }
 
 void TutorialGameMode::update() {

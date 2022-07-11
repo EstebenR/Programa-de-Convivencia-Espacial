@@ -18,8 +18,8 @@ private:
 	int currentSize_ = 0;
 	int sizeChangeRate_ = (maxSize_ - minSize_) / framesPerNum_; //ratio de crecimiento teniendo en cuenta que hay 4 texturas
 
-	int posX_ = CONST(int, "WINDOW_WIDTH") / 2;
-	int posY_ = CONST(int, "WINDOW_HEIGHT") / 2;
+	int posX_ = CONST(int, "WINDOW_WIDTH") * 0.5f;
+	int posY_ = CONST(int, "WINDOW_HEIGHT") * 0.5f;
 
 	Texture* textures_[4] = { //3 2 1 go
 	SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::Three),

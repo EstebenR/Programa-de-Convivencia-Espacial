@@ -19,15 +19,14 @@ void FireBallPool::init(EntityManager* eMan, b2World* physicsWorld) {
 
 void FireBallPool::addFireBall(b2Vec2 pos, b2Vec2 impulse) {
 	Entity* e = fireballPool_.getObj();
-	if (e != nullptr) {
-		//impulse = b2Vec2(0, 1);
-		double angle = fmod((double)atan2(impulse.x, impulse.y), 2 * PI) + PI / 2 - (45 * PI / (double)180);
-		cout << "impulse angle is " << atan2(impulse.x, impulse.y) * 57.29578 << " and sprite is " << angle * 57.29578 << endl;
+	if (e != nullptr)
+	{
+		double angle = fmod((double)atan2(impulse.x, impulse.y), 2 * PI) + PI * 0.5f - (45 * PI / (double)180);
+		//cout << "impulse angle is " << atan2(impulse.x, impulse.y) * 57.29578 << " and sprite is " << angle * 57.29578 << "\n";
 		GETCMP2(e, Fireball)->setActive(true, pos, angle);
 		GETCMP2(e, Collider)->applyLinearImpulse(impulse, b2Vec2(0, 0));
 
-		cout << endl;
-		cout << "---- BOLA ACTIVADA ----" << endl;
+		//cout << "---- BOLA ACTIVADA ----\n";
 
 		SDL_Game::instance()->getAudioMngr()->playChannel(Resources::AudioId::BoilerShootSound, 0);
 	}

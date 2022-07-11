@@ -43,7 +43,7 @@ private:
 	bool isImpulseValid(const b2Vec2& dir); //prevents the player from impulsing against the body is attached to
 public:
 	PlayerController();
-	virtual ~PlayerController() { Component::~Component(); };
+	virtual ~PlayerController() { };
 
 	void init() override;
 	void handleInput() override;

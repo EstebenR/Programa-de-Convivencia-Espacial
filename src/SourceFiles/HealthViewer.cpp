@@ -26,19 +26,19 @@ void HealthViewer::init()
 }
 void HealthViewer::update()
 {
-	//Todo lo hace el draw, este no sirve ninguna función
+	//Todo lo hace el draw, este no sirve ninguna funciï¿½n
 }
 void HealthViewer::draw() const
 {
 	int player = playerData_->getPlayerNumber();
-	SDL_Rect dest = { pos_.x,pos_.y, lifeWidth_, lifeHeight_ };
+	SDL_Rect dest = { (int)pos_.x, (int)pos_.y, lifeWidth_, lifeHeight_ };
 	for (int i = 0; i < he->getHealthMax(); i++) {
 		// +- offset dependiendo de la posicion del jugador
 		dest.x = pos_.x + ((player % 2 == 0) ? 1 : -1) * i * (lifeWidth_ + lifeDrawOffset_);
 
 		if ((i + 1) <= he->getHealth())	//Si tiene esas X vidas las muertra como llenas
 			full->render(dest, 0, 0, playerSkin_, flip_);
-		else		//Si no las tiene, se dibujarán como vacias
+		else		//Si no las tiene, se dibujarï¿½n como vacias
 			empty->render(dest, 0, 0, 0, flip_);
 	}
 }

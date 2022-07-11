@@ -49,14 +49,14 @@ void EndGameState::init()
 		b2Vec2 actBadgeWH(basicBadgeWH.x * scale, basicBadgeWH.y * scale);
 
 		Entity* auxEntity = entityManager_->addEntity();
-		int x = auxX - actPlayerWH.x / 2;
+		int x = auxX - actPlayerWH.x * 0.5f;
 
 		UIViewer* playerV = auxEntity->addComponent<UIViewer>(Resources::PlayerAnimSheet, b2Vec2(x, y), 1);
 		playerV->setWHUIElement(actPlayerWH);
 		playerV->setFrame(0, sortedPlayerInfo_[i]->playerSkin);
 
-		x = medalOffset - actMedalWH.x / 2;
-		y += actMedalWH.y / 2;
+		x = medalOffset - actMedalWH.x * 0.5f;
+		y += actMedalWH.y * 0.5f;
 
 		if (i < 3) {//si le toca medallita
 			UIViewer* medalV = auxEntity->addComponent<UIViewer>(Resources::medals, b2Vec2(x, y), 1);
@@ -64,7 +64,7 @@ void EndGameState::init()
 			medalV->setWHUIElement(actMedalWH);
 		}
 		x += actMedalWH.x;
-		y += actBadgeWH.y / 2;
+		y += actBadgeWH.y * 0.5f;
 
 		//lista de chapitas
 		vector<int> chapitas;
@@ -85,11 +85,11 @@ void EndGameState::init()
 			x += actBadgeWH.x;
 		}
 
-		y += actPlayerWH.y - actMedalWH.y / 2 - actBadgeWH.y / 2;
+		y += actPlayerWH.y - actMedalWH.y * 0.5f - actBadgeWH.y * 0.5f;
 	}
 
 	b2Vec2 textWH(CONST(int, "LEADERBOARD_TEXT_W"), CONST(int, "LEADERBOARD_TEXT_H"));
-	int winTextX = CONST(int, "WINDOW_WIDTH") / 2 - textWH.x / 2;
+	int winTextX = CONST(int, "WINDOW_WIDTH") * 0.5f - textWH.x * 0.5f;
 	int winTextY = CONST(int, "LEADERBOARD_TEXT_Y");
 	Entity* e = entityManager_->addEntity();
 	UIViewer* textV = e->addComponent<UIViewer>(Resources::winner1 + sortedPlayerInfo_[0]->playerId, b2Vec2(winTextX, winTextY), 1);

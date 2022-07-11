@@ -40,10 +40,10 @@ void LobbyState::init()
 	for (int num = 0; num < maxSkins_; num++) isSkinPicked_.push_back(false);
 	for (int num = 0; num < MAX_PLAYERS; num++) holdingButtons_.push_back(false);
 
-	verticalIniPoint_ = CONST(int, "WINDOW_HEIGHT") / 2 - playerTexture_->getFrameHeight();
+	verticalIniPoint_ = CONST(int, "WINDOW_HEIGHT") * 0.5f - playerTexture_->getFrameHeight();
 
 	horizontalIniPoint_ = (CONST(int, "WINDOW_WIDTH") - (MAX_PLAYERS * playerTexture_->getFrameWidth() +
-		(CONST(int, "LOBBY_OFFSET_X") * (MAX_PLAYERS - 1)))) / 2;
+		(CONST(int, "LOBBY_OFFSET_X") * (MAX_PLAYERS - 1)))) * 0.5f;
 
 	horizontalOffset_ = playerTexture_->getFrameWidth() + CONST(int, "LOBBY_OFFSET_X");
 	playerIdVerticalOffset_ = playerTexture_->getFrameHeight() + CONST(int, "LOBBY_PLAYERID_OFFSET_Y");
@@ -67,7 +67,7 @@ void LobbyState::update()
 void LobbyState::render() {
 	fondo_->render(0, 0);
 	int i = 0;
-	for (PlayerLobbyInfo& const player : joinedPlayers_) {
+	for (PlayerLobbyInfo& player : joinedPlayers_) {
 		renderPlayerLobbyInfo(&player, i);
 		i++;
 	}
@@ -135,7 +135,7 @@ void LobbyState::renderPlayerLobbyInfo(PlayerLobbyInfo* playerInfo, int index) {
 	else voidTexture_->render(destRect);
 
 	if (playerInfo != nullptr) {
-		destRect.y += playerTexture_->getFrameHeight() / 2 + playerIdVerticalOffset_;
+		destRect.y += playerTexture_->getFrameHeight() * 0.5f + playerIdVerticalOffset_;
 		destRect.w /= 3; destRect.h /= 3;
 		string playerNum = to_string(playerInfo->id);
 		Texture playerNumTexture(SDL_Game::instance()->getRenderer(), playerNum,
@@ -346,7 +346,7 @@ void LobbyState::handleJoinedPlayers() {
 		}
 		if (player.inputBinder->menuForward()) {
 			player.ready = true;
-		std:cout << "Jufador listisimo" << endl;
+		//std:cout << "Jufador listisimo" << endl;
 		}
 		else if (player.inputBinder->menuBack()) {
 			if (player.ready)

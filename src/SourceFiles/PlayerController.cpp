@@ -12,13 +12,13 @@ bool PlayerController::isImpulseValid(const b2Vec2& dir)
 	//b2Vec2 normalDir(dir.x, dir.y);
 	float angle = atan2(dir.y, dir.x) - atan2(normal.y, normal.x);
 	if (angle < 0) angle += (2 * PI);
-	cout << "normal on impulse " << normal.x << " " << normal.y << endl;
-	cout << "dir on impulse " << dir.x << " " << dir.y << endl;
-	cout << "angle " << angle << endl;
+	//cout << "normal on impulse " << normal.x << " " << normal.y << endl;
+	//cout << "dir on impulse " << dir.x << " " << dir.y << endl;
+	//cout << "angle " << angle << endl;
 	//comop mucho permite impulsos perpendiculares al agarre
 	//sumar radianes a PI/2 para restringir aun mas la direccion de impulso
-	return angle <= ((PI / 2) + impulseRadError_) || angle >= ((1.5 * PI) - impulseRadError_);
-	//return abs(angle) < PI / 2;
+	return angle <= ((PI * 0.5f) + impulseRadError_) || angle >= ((1.5 * PI) - impulseRadError_);
+	//return abs(angle) < PI * 0.5f;
 }
 
 PlayerController::PlayerController() : Component(ComponentType::PlayerController),
@@ -91,8 +91,9 @@ void PlayerController::handleInput()
 			SDL_Game::instance()->getAudioMngr()->playChannel(Resources::ImpulseFromAirSound, 0);
 			coll_->applyLinearImpulse(dirImpulse_, b2Vec2(0, 0)); //aplica la fuerza
 			if (dirImpulse_.Normalize() >= minFartForce_) {
-				b2Vec2 dir = dirImpulse_.NormalizedVector();
-				emitter_->setOffset(Vector2D(-dir.x * (float)playerHeight_ / 2, dir.y * (float)playerHeight_ / 2));
+				b2Vec2 dir = dirImpulse_;
+				dir.Normalize();
+				emitter_->setOffset(Vector2D(-dir.x * (float)playerHeight_ * 0.5f, dir.y * (float)playerHeight_ * 0.5f));
 				emitter_->setDirection(Vector2D(-dir.x, dir.y));
 				emitter_->PlayStop();
 			}

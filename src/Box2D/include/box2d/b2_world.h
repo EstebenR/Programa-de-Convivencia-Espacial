@@ -23,6 +23,7 @@
 #ifndef B2_WORLD_H
 #define B2_WORLD_H
 
+#include "b2_api.h"
 #include "b2_block_allocator.h"
 #include "b2_contact_manager.h"
 #include "b2_math.h"
@@ -42,7 +43,7 @@ class b2Joint;
 /// The world class manages all physics entities, dynamic simulation,
 /// and asynchronous queries. The world also contains efficient memory
 /// management facilities.
-class b2World
+class B2_API b2World
 {
 public:
 	/// Construct a world object.
@@ -58,7 +59,7 @@ public:
 
 	/// Register a contact filter to provide specific control over collision.
 	/// Otherwise the default filter is used (b2_defaultFilter). The listener is
-	/// owned by you and must remain in scope. 
+	/// owned by you and must remain in scope.
 	void SetContactFilter(b2ContactFilter* filter);
 
 	/// Register a contact event listener. The listener is owned by you and must
@@ -66,7 +67,7 @@ public:
 	void SetContactListener(b2ContactListener* listener);
 
 	/// Register a routine for debug drawing. The debug draw functions are called
-	/// inside with b2World::DrawDebugData method. The debug draw object is owned
+	/// inside with b2World::DebugDraw method. The debug draw object is owned
 	/// by you and must remain in scope.
 	void SetDebugDraw(b2Draw* debugDraw);
 
@@ -109,7 +110,7 @@ public:
 	void ClearForces();
 
 	/// Call this to draw shapes and other debug draw data. This is intentionally non-const.
-	void DrawDebugData();
+	void DebugDraw();
 
 	/// Query the world for all fixtures that potentially overlap the
 	/// provided AABB.
@@ -185,7 +186,7 @@ public:
 
 	/// Change the global gravity vector.
 	void SetGravity(const b2Vec2& gravity);
-	
+
 	/// Get the global gravity vector.
 	b2Vec2 GetGravity() const;
 
@@ -223,7 +224,6 @@ private:
 	void Solve(const b2TimeStep& step);
 	void SolveTOI(const b2TimeStep& step);
 
-	void DrawJoint(b2Joint* joint);
 	void DrawShape(b2Fixture* shape, const b2Transform& xf, const b2Color& color);
 
 	b2BlockAllocator m_blockAllocator;

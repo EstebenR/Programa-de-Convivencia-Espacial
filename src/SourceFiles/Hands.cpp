@@ -28,14 +28,15 @@ void Hands::draw() const
 	double angle = std::atan2((double)stickDir.x, -(double)stickDir.y) * (180.0 / PI) + 90;
 
 	SDL_Rect playerRect = collider_->getRectRender();
-	SDL_Rect destRect{ playerRect.x + playerRect.w / 2 - handSize_ / 2,playerRect.y + playerRect.h / 2 - handSize_ / 2 , handSize_ , handSize_ };
+	SDL_Rect destRect{ (int)(playerRect.x + playerRect.w * 0.5f - handSize_ * 0.5f), (int)(playerRect.y + playerRect.h * 0.5f - handSize_ * 0.5f), (int)handSize_ , (int)handSize_ };
 
 	tex_->render(destRect, angle, frameX_, frameY_, Flipped_);
 }
 
 void Hands::handleInput()
 {
-	b2Vec2 vI = (ib_->getAimDir()).NormalizedVector();
+	b2Vec2 vI = ib_->getAimDir();
+	vI.Normalize();
 	if (vI.Length() != 0) dir_.Set(vI.x, vI.y);
 }
 

@@ -91,8 +91,8 @@ void CapitalismGameMode::renderCoinsMarker()
 		for (int i = 0; i < coinNumbTextures.size(); i++) {
 			coinTextRect.w = coinNumbTextures[i]->getWidth() * coinUISpriteScale_;
 			coinTextRect.h = coinNumbTextures[i]->getHeight() * coinUISpriteScale_;
-			coinTextRect.x = (k % 2 == 0) ? (coinImageRect.x + coinImageRect.w / 3 + i * coinTextRect.w) + coinUIRadius_ :
-				(coinImageRect.x + coinImageRect.w / 3 + i * coinTextRect.w) - coinUIRadius_ * coinNumbTextures.size() / 1.5;
+			coinTextRect.x = (k % 2 == 0) ? (coinImageRect.x + coinImageRect.w * 0.333333333 + i * coinTextRect.w) + coinUIRadius_ :
+				(coinImageRect.x + coinImageRect.w * 0.333333333 + i * coinTextRect.w) - coinUIRadius_ * coinNumbTextures.size() * 0.6666666666;
 			coinTextRect.y = coinImageRect.y + coinUIRadius_ * 0.04;
 
 			coinNumbTextures[i]->render(coinTextRect, 0, 0);

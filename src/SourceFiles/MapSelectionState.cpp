@@ -18,7 +18,7 @@ void MapSelectionState::init() {
 	createImages();
 	createTexts();
 	createIcons();
-	cout << "init map select";
+	//cout << "init map select\n";
 
 	Entity* temp = entityManager_->addEntity();
 	mapSelCursor_ = temp->addComponent<UIViewer>(Resources::CursorUiSelectMap, coordsImages_[0] + mapCursorOffset_, mapScale_ * 3, 0);
@@ -31,16 +31,16 @@ void MapSelectionState::init() {
 	//Textos
 	choseMapText_ = entityManager_->addEntity();
 	UIViewer* uiV = choseMapText_->addComponent<UIViewer>(Resources::ChoseMap, b2Vec2(0, 0), 1);
-	uiV->setPosUIElement(b2Vec2((CONST(int, "WINDOW_WIDTH") - uiV->getW()) / 2, CONST(int, "CHOSE_MAP_TEXT_Y_OFFSET")));
+	uiV->setPosUIElement(b2Vec2((CONST(int, "WINDOW_WIDTH") - uiV->getW()) * 0.5f, CONST(int, "CHOSE_MAP_TEXT_Y_OFFSET")));
 
 	choseModeText_ = entityManager_->addEntity();
 	uiV = choseModeText_->addComponent<UIViewer>(Resources::ChoseMode, b2Vec2(0, 0), 1);
-	uiV->setPosUIElement(b2Vec2((CONST(int, "WINDOW_WIDTH") - uiV->getW()) / 2, CONST(int, "CHOSE_MAP_TEXT_Y_OFFSET")));
+	uiV->setPosUIElement(b2Vec2((CONST(int, "WINDOW_WIDTH") - uiV->getW()) * 0.5f, CONST(int, "CHOSE_MAP_TEXT_Y_OFFSET")));
 	choseModeText_->setActive(false);
 
 	pressEnterText_ = entityManager_->addEntity();
 	uiV = pressEnterText_->addComponent<UIViewer>(Resources::PressEnter, b2Vec2(0, 0), 1);
-	uiV->setPosUIElement(b2Vec2((CONST(int, "WINDOW_WIDTH") - uiV->getW()) / 2, (CONST(int, "WINDOW_HEIGHT") - CONST(int, "CHOSE_MAP_TEXT_Y_OFFSET") * 2)));
+	uiV->setPosUIElement(b2Vec2((CONST(int, "WINDOW_WIDTH") - uiV->getW()) * 0.5f, (CONST(int, "WINDOW_HEIGHT") - CONST(int, "CHOSE_MAP_TEXT_Y_OFFSET") * 2)));
 	pressEnterText_->setActive(false);
 }
 
@@ -279,17 +279,17 @@ void MapSelectionState::updateMenu() {
 };
 
 void MapSelectionState::createImages() { //preparar los textos
-	coordsImages_.push_back(b2Vec2((sizeScreen.x - (sizeImg.x * 2 + mapMargin_)) / 2,
-		(sizeScreen.y - (sizeImg.y * 2 + mapMargin_)) / 2));
+	coordsImages_.push_back(b2Vec2((sizeScreen.x - (sizeImg.x * 2 + mapMargin_)) * 0.5f,
+		(sizeScreen.y - (sizeImg.y * 2 + mapMargin_)) * 0.5f));
 
-	coordsImages_.push_back(b2Vec2((sizeScreen.x - (sizeImg.x * 2 + mapMargin_)) / 2 + mapMargin_ + sizeImg.x,
-		(sizeScreen.y - (sizeImg.y * 2 + mapMargin_)) / 2));
+	coordsImages_.push_back(b2Vec2((sizeScreen.x - (sizeImg.x * 2 + mapMargin_)) * 0.5f + mapMargin_ + sizeImg.x,
+		(sizeScreen.y - (sizeImg.y * 2 + mapMargin_)) * 0.5f));
 
-	coordsImages_.push_back(b2Vec2((sizeScreen.x - (sizeImg.x * 2 + mapMargin_)) / 2,
-		(sizeScreen.y - (sizeImg.y * 2 + mapMargin_)) / 2 + mapMargin_ + sizeImg.y));
+	coordsImages_.push_back(b2Vec2((sizeScreen.x - (sizeImg.x * 2 + mapMargin_)) * 0.5f,
+		(sizeScreen.y - (sizeImg.y * 2 + mapMargin_)) * 0.5f + mapMargin_ + sizeImg.y));
 
-	coordsImages_.push_back(b2Vec2((sizeScreen.x - (sizeImg.x * 2 + mapMargin_)) / 2 + mapMargin_ + sizeImg.x,
-		(sizeScreen.y - (sizeImg.y * 2 + mapMargin_)) / 2 + mapMargin_ + sizeImg.y));
+	coordsImages_.push_back(b2Vec2((sizeScreen.x - (sizeImg.x * 2 + mapMargin_)) * 0.5f + mapMargin_ + sizeImg.x,
+		(sizeScreen.y - (sizeImg.y * 2 + mapMargin_)) * 0.5f + mapMargin_ + sizeImg.y));
 
 	for (int i = 0; i < 4; i++) {
 		imagesMaps_.push_back(entityManager_->addEntity());
@@ -305,7 +305,7 @@ void MapSelectionState::createTexts()
 	for (auto e : texturesTexts_) {
 		textsGamemodes_.push_back(entityManager_->addEntity());
 		UIViewer* uiV = textsGamemodes_.back()->addComponent<UIViewer>(texturesTexts_[i], b2Vec2(0, 0), gmTextScale_, 0);
-		uiV->setPosUIElement(b2Vec2((winWidth - uiV->getW()) / 2, (float)(i * gmMarginText_.y + gmOffsetText_.y)));
+		uiV->setPosUIElement(b2Vec2((winWidth - uiV->getW()) * 0.5f, (float)(i * gmMarginText_.y + gmOffsetText_.y)));
 		textsGamemodes_.back()->setActive(false);
 		i++;
 	}
@@ -321,7 +321,7 @@ void MapSelectionState::createIcons() {
 		iconsGamemodes_.push_back(entityManager_->addEntity());
 		UIViewer* uiV = iconsGamemodes_.back()->addComponent<UIViewer>(texturesIcons_[i], b2Vec2(0, 0), 3, 0);
 		UIViewer* uiVText = GETCMP2(textsGamemodes_[i], UIViewer);
-		uiV->setPosUIElement(b2Vec2((winWidth - uiVText->getW()) / 2 - margin, (float)(i * gmMarginText_.y + gmOffsetIcons_.y)));
+		uiV->setPosUIElement(b2Vec2((winWidth - uiVText->getW()) * 0.5f - margin, (float)(i * gmMarginText_.y + gmOffsetIcons_.y)));
 		iconsGamemodes_.back()->setActive(false);
 		i++;
 	}

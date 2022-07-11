@@ -69,7 +69,7 @@ void InputHandler::update() {
 }
 
 void InputHandler::initialiseGamepads() {
-	if (-1 == SDL_GameControllerAddMappingsFromFile("./config/gamecontrollerdb.txt"))
+	if (-1 == SDL_GameControllerAddMappingsFromFile("../config/gamecontrollerdb.txt"))
 		cout << "Error al cargar la base de datos" << endl;
 	if (SDL_WasInit(SDL_INIT_JOYSTICK) == 0) {
 		SDL_InitSubSystem(SDL_INIT_JOYSTICK);

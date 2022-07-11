@@ -5,7 +5,7 @@
 #ifndef TILESON_PROPERTY_H
 #define TILESON_PROPERTY_H
 
-#include "../TilesonConfig.h"
+#include "../../TilesonConfig.h"
 
 #if USE_CPP17_FILESYSTEM
     #if MSVC

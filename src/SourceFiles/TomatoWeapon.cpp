@@ -84,7 +84,8 @@ void TomatoWeapon::onCollisionEnter(Collision* c) {
 			c->collisionHandler->addCoinDrop(std::make_tuple(walletPlayer, playerData, 3));
 		}
 
-		b2Vec2 dir = (collPlayer->getPos() - colTomato_->getPos()).NormalizedVector();
+		b2Vec2 dir = (collPlayer->getPos() - colTomato_->getPos());
+		dir.Normalize();
 		if (dir.x == 0 && dir.y == 0) { //This happens when the tomato explodes in the hand of the player.
 			int dirX = rand() % 2;
 			int dirY = rand() % 2;

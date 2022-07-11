@@ -36,18 +36,18 @@ void OptionsMenuState::init()
 	Entity* musicSliderControl = entityManager_->addEntity();
 	Entity* effectsSliderControl = entityManager_->addEntity();
 
-	OptionsText->addComponent<UIViewer>(Resources::OptionsText, b2Vec2((CONST(int, "WINDOW_WIDTH") / 2) - 340, (CONST(int, "WINDOW_HEIGHT") / 2) - 310), 2.5, 0);
+	OptionsText->addComponent<UIViewer>(Resources::OptionsText, b2Vec2((CONST(int, "WINDOW_WIDTH") * 0.5f) - 340, (CONST(int, "WINDOW_HEIGHT") * 0.5f) - 310), 2.5, 0);
 
-	btns_.push_back(musicText->addComponent<UIViewer>(Resources::MusicText, b2Vec2((CONST(int, "WINDOW_WIDTH") / 2 - SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::MusicText)->getFrameWidth() * 1.5),
-		(CONST(int, "WINDOW_HEIGHT") / 2) + offsetBetweenButtons_ * 0), 1.5, 0));
-	btns_.push_back(effectsText->addComponent<UIViewer>(Resources::EffectsText, b2Vec2((CONST(int, "WINDOW_WIDTH") / 2 - SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::EffectsText)->getFrameWidth() * 1.5),
-		(CONST(int, "WINDOW_HEIGHT") / 2) + offsetBetweenButtons_ * 1), 1.5, 0));
-	btns_.push_back(GoBack->addComponent<UIViewer>(Resources::GoBackText, b2Vec2(((CONST(int, "WINDOW_WIDTH") - SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::GoBackText)->getFrameWidth() * 1.5) / 2), (CONST(int, "WINDOW_HEIGHT") / 2) + +offsetBetweenButtons_ * 2), 1.5, 0));
+	btns_.push_back(musicText->addComponent<UIViewer>(Resources::MusicText, b2Vec2((CONST(int, "WINDOW_WIDTH") * 0.5f - SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::MusicText)->getFrameWidth() * 1.5),
+		(CONST(int, "WINDOW_HEIGHT") * 0.5f) + offsetBetweenButtons_ * 0), 1.5, 0));
+	btns_.push_back(effectsText->addComponent<UIViewer>(Resources::EffectsText, b2Vec2((CONST(int, "WINDOW_WIDTH") * 0.5f - SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::EffectsText)->getFrameWidth() * 1.5),
+		(CONST(int, "WINDOW_HEIGHT") * 0.5f) + offsetBetweenButtons_ * 1), 1.5, 0));
+	btns_.push_back(GoBack->addComponent<UIViewer>(Resources::GoBackText, b2Vec2(((CONST(int, "WINDOW_WIDTH") - SDL_Game::instance()->getTexturesMngr()->getTexture(Resources::GoBackText)->getFrameWidth() * 1.5) * 0.5f), (CONST(int, "WINDOW_HEIGHT") * 0.5f) + +offsetBetweenButtons_ * 2), 1.5, 0));
 
 	buttonSelectorImage_ = rocket->addComponent<UIViewer>(Resources::Rocket, b2Vec2(btns_[selectedBtn_]->getPosUIElement().x - 160, btns_[selectedBtn_]->getPosUIElement().y - 30), 0.8, 90);
 
-	musicSliderImage_ = musicSlider->addComponent<UIViewer>(Resources::Slider, b2Vec2(CONST(int, "WINDOW_WIDTH") / 2, btns_[Button::Music]->getPosUIElement().y), 2, 0);
-	effectsSliderImage_ = effectsSlider->addComponent<UIViewer>(Resources::Slider, b2Vec2(CONST(int, "WINDOW_WIDTH") / 2, btns_[Button::Effects]->getPosUIElement().y), 2, 0);
+	musicSliderImage_ = musicSlider->addComponent<UIViewer>(Resources::Slider, b2Vec2(CONST(int, "WINDOW_WIDTH") * 0.5f, btns_[Button::Music]->getPosUIElement().y), 2, 0);
+	effectsSliderImage_ = effectsSlider->addComponent<UIViewer>(Resources::Slider, b2Vec2(CONST(int, "WINDOW_WIDTH") * 0.5f, btns_[Button::Effects]->getPosUIElement().y), 2, 0);
 
 	musicSliderControlImage_ = musicSliderControl->addComponent<UIViewer>(Resources::SliderControl, b2Vec2((musicSliderImage_->getPosUIElement().x + 33) + ((currentMusicVolume_ / 10) * (250 / (maxMusicVolume_ / 10))), btns_[Button::Music]->getPosUIElement().y), 2, 0);
 	effectsSliderControlImage_ = effectsSliderControl->addComponent<UIViewer>(Resources::SliderControl, b2Vec2((effectsSliderImage_->getPosUIElement().x + 33) + ((currentEffectsVolume_ / 10) * (250 / (maxEffectsVolume_ / 10))), btns_[Button::Effects]->getPosUIElement().y), 2, 0);
